@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Redirecionando...</title>
+</head>
+<body>
+<p>Redirecionando...</p>
+<script>
+(async function () {
+  const path = location.pathname.replace(/^\/+|\/+$/g, "");
+  const parts = path.split("/");
+
+  // Formato: /foto/hangcha/<slug>
+  if (parts.length >= 3 && parts[0] === "foto" && parts[1] === "hangcha") {
+    const slug = parts.slice(2).join("/");
+    const links = await fetch("/links.json").then(r => r.json());
+    if (links[slug]) {
+      location.replace(links[slug]);
+      return;
+    }
+  }
+
+  // Formato: /planodemanutencao
+  if (parts[0] === "planodemanutencao") {
+    const plano = ""https://docs.google.com/spreadsheets/d/1BSShJLZvxTwB8b2mfqDQVUbvq532o_7zE2RxkYMqc_M/edit?gid=1562451561#gid=1562451561"";
+    if (plano) {
+      location.replace(plano);
+      return;
+    }
+  }
+
+  document.body.innerHTML = "<h2>Link não encontrado</h2><p>O endereço informado não possui um redirecionamento cadastrado.</p>";
+})();
+</script>
+</body>
+</html>
