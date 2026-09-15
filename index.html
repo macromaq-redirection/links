@@ -1,1 +1,29 @@
-Redirecionando...
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Redirecionando...</title>
+    <script>
+        (async function() {
+            const path = window.location.pathname.replace(/^\/links\/?/, '').replace(/\/$/, '');
+            try {
+                const response = await fetch('./links.json');
+                const links = await response.json();
+                if (links[path]) {
+                    window.location.href = links[path];
+                } else if (path === '' && links['home']) {
+                    window.location.href = links['home'];
+                } else {
+                    document.body.innerHTML = '<h2>Link não encontrado.</h2>';
+                }
+            } catch (error) {
+                console.error('Erro ao redirecionar:', error);
+                document.body.innerHTML = '<h2>Erro ao carregar os links.</h2>';
+            }
+        })();
+    </script>
+</head>
+<body>
+    <p>Redirecionando...</p>
+</body>
+</html>
